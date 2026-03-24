@@ -73,49 +73,143 @@ class ProductDetailsScreen extends StatelessWidget {
               ],
             ),
             Text('Select Size', style: Theme.of(context).textTheme.bodyLarge),
-            SizedBox(
-              height: 40,
-              child: ListView.separated(
-                separatorBuilder: (context, index) {
-                  return SizedBox(width: 5);
-                },
-                scrollDirection: Axis.horizontal,
 
-                itemCount: size.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    height: 30,
-                    width: 30,
-                    padding: EdgeInsets.all(4),
+            SizedBox(
+              height: 55,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return SizedBox(width: 6);
+                    },
+                    scrollDirection: Axis.horizontal,
+                    itemCount: size.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        alignment: Alignment.center,
+                        width: 55,
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: index == 2
+                              ? Colors.deepOrange
+                              : Colors.grey[200],
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          size[index],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: index == 2 ? Colors.white : Colors.black,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+                  Container(
+                    width: 100,
+                    height: 55,
                     decoration: BoxDecoration(
                       color: Colors.grey[200],
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
-                      size[index],
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(4),
+                          alignment: Alignment.center,
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                          ),
+                          child: Text('-'),
+                        ),
+                        Text('1'),
+                        Container(
+                          margin: EdgeInsets.all(4),
+                          alignment: Alignment.center,
+                          height: 30,
+                          width: 30,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                          ),
+                          child: Text('+'),
+                        ),
+                      ],
                     ),
-                  );
-                },
-              ),
-            ),
-
-            Container(
-              height: 40,
-              decoration: BoxDecoration(color: Colors.grey[200]),
-              child: Row(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(8),
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(color: Colors.white),
-                    child: Text('-'),
                   ),
                 ],
               ),
             ),
-            Text('D', maxLines: 4),
+            SizedBox(height: 5),
+            Text(
+              'Description',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              overflow: TextOverflow.ellipsis,
+              maxLines: 4,
+              strutStyle: StrutStyle(fontSize: 18),
+              'HEllo is more than just a tool - its a gateway to a transformed workday. With its advanced capabilities, youll breeze through tasks, crush deadlines, and reclaim your time. Whether youre an entrepreneur, student, or professional, HEllo empowers you to conquer the day and achieve your goals with ease.',
+            ),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: BoxBorder.all(color: Colors.black, width: 2),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.card_travel),
+                        Text(
+                          'Add To Cart',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Container(
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: Colors.deepOrange,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.badge, color: Colors.white),
+                        Text(
+                          'Buy Now',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),

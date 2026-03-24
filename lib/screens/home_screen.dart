@@ -1,6 +1,7 @@
 import 'package:ecard/screens/product_details_screen.dart';
 import 'package:ecard/widgets/row_text.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -67,7 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       AppBarIcon(
                         // iconColor: Colors.amber,
                         iconData: Icons.local_mall,
-                        onTap: () {},
+                        onTap: () async {
+                          await fetchApiData();
+                        },
                       ),
                       SizedBox(width: 5),
                       AppBarIcon(
@@ -194,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.all(12),
+                      padding: EdgeInsets.all(8),
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(12),
@@ -220,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           Spacer(),
                           Row(
-                            // spacing: 4,
+                            spacing: 4,
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,12 +256,16 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
 
                               Container(
-                                padding: EdgeInsets.all(6),
+                                padding: EdgeInsets.all(3),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(12),
                                   color: Colors.deepOrange,
                                 ),
-                                child: Icon(Icons.badge, color: Colors.white),
+                                child: Icon(
+                                  
+                                  Icons.shopping_cart,
+                                  color: Colors.white,
+                                ),
                               ),
                             ],
                           ),
@@ -273,6 +280,21 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> fetchApiData() async {
+    // var url =
+    //   Uri.https('www.googleapis.com', '/books/v1/volumes', {'q': '{http}'});
+    var customHeaders = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      // 'Authorization': 'Bearer YOUR_TOKEN', // Example if needed
+    };
+    var url = Uri.parse('https://jsonplaceholder.typicode.com/users#');
+    var response = await http.get(url, headers: customHeaders);
+    if (response.statusCode == 200) {
+      print('Object ${response.body}');
+    }
   }
 }
 
