@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:ecard/model/user/user.dart';
 import 'package:ecard/screens/product_details_screen.dart';
 import 'package:ecard/widgets/row_text.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var totalValue = 0;
-
+  bool isLoading = true;
   void increment() {
     totalValue++;
     setState(() {});
@@ -20,6 +23,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final List categories = ["All", "Men", "Women", "Girls"];
+  List<User> user = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchApiData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         // iconColor: Colors.amber,
                         iconData: Icons.local_mall,
                         onTap: () async {
-                          await fetchApiData();
+                          // await fetchApiData();
                         },
                       ),
                       SizedBox(width: 5),
@@ -82,198 +92,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              Row(
-                spacing: 10,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        hint: Text(
-                          'Search',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  AppBarIcon(iconData: Icons.filter_list, onTap: () {}),
-                ],
-              ),
-
-              RowText(title: 'Categories', label: 'See All'),
 
               SizedBox(
-                height: 50,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) {
-                    return SizedBox(width: 10);
-                  },
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
+                height: 500,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: user.length,
                   itemBuilder: (context, index) {
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      width: 80,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: index == 0
-                            ? Colors.deepOrange
-                            : Colors.grey[200],
-                      ),
-                      child: Text(
-                        categories[index],
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: index == 0 ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    );
+                    var finalUser = user[index];
+                    return isLoading
+                        ? CircularProgressIndicator()
+                        : ListTile(
+                            leading: CircleAvatar(
+                              child: Text(finalUser.id.toString()),
+                            ),
+                            title: Text(finalUser.name ?? 'n/a'),
+                            trailing: Text(finalUser.company!.name.toString()),
+                            subtitle: Text(
+                              finalUser.address!.geo!.lat.toString(),
+                            ),
+                          );
                   },
                 ),
-              ),
-
-              Container(
-                padding: EdgeInsets.all(12),
-                height: 200,
-
-                decoration: BoxDecoration(
-                  color: Colors.deepOrange,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Get Your\nSpecial Sale \nUp to 40%',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Spacer(),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text('Shop Now'),
-                        ),
-                      ],
-                    ),
-                    Image.network(
-                      'https://pngimg.com/uploads/tshirt/tshirt_PNG5454.png',
-                    ),
-                  ],
-                ),
-              ),
-
-              RowText(title: 'Popular Product', label: 'See All'),
-
-              GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(10),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailsScreen(),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Stack(
-                            children: [
-                              Image.network(
-                                width: MediaQuery.sizeOf(context).width,
-                                height: 120,
-                                'https://pngimg.com/uploads/tshirt/tshirt_PNG5449.png',
-                                fit: BoxFit.contain,
-                              ),
-
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: Icon(Icons.favorite_border),
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          Row(
-                            spacing: 4,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Cotton T-Shirt',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Row(
-                                    spacing: 4,
-                                    children: [
-                                      Text(
-                                        '\$69',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-
-                                      Text(
-                                        '\$189',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-
-                              Container(
-                                padding: EdgeInsets.all(3),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.deepOrange,
-                                ),
-                                child: Icon(
-                                  
-                                  Icons.shopping_cart,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
               ),
             ],
           ),
@@ -293,7 +134,18 @@ class _HomeScreenState extends State<HomeScreen> {
     var url = Uri.parse('https://jsonplaceholder.typicode.com/users#');
     var response = await http.get(url, headers: customHeaders);
     if (response.statusCode == 200) {
-      print('Object ${response.body}');
+      List data = jsonDecode(response.body);
+
+      user = data.map((e) => User.fromMap(e)).toList();
+      isLoading = false;
+      setState(() {});
+
+      // for (var e in data) {
+      //   user = User.fromMap(e) as List<User>;
+      // }
+      // setState(() {});
+      print('Object ${user.length}');
+      print('Object ${user[0].name}');
     }
   }
 }
