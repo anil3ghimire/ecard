@@ -1,11 +1,19 @@
-// void main() async {
-//   Student s1 = Student('Anil', 21);
-//   print('object${s1.name}');
-// }
+void main() {
+  // try {
+  //   int result = 10 ~/ 0; // ❌ will cause error
+  //   print(result);
+  // } catch (e) {
+  //   print("Error caught: $e");
+  // } finally {
+  //   print("This always runs");
+  // }
 
-// class User {
-//   String? name;
-//   int? age;
-
-//   Student(this.name, this.age);
-// }
+  try {
+    int result = 10 ~/ 2;
+    print('object$result');
+  } catch (e) {
+    print("Error caught $e");
+  } finally {
+    print("Both case error or not error ");
+  }
+}

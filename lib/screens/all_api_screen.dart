@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ecard/api_service.dart';
 import 'package:ecard/model/post/post.dart';
 import 'package:ecard/model/product.dart';
 import 'package:ecard/screens/post_screen.dart';
@@ -17,12 +18,17 @@ class _AllApiScreenState extends State<AllApiScreen> {
   @override
   void initState() {
     super.initState();
-    getPostData();
+    // getPostData();
+    // loadData();
+    createPost();
   }
+
+  List<Post> post = [];
 
   List<Product> product = [];
   bool isLoading = false;
   var baseUrl = 'https://jsonplaceholder.typicode.com/posts';
+  final api = ApiService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +123,7 @@ class _AllApiScreenState extends State<AllApiScreen> {
       'Accept': 'application/json',
       // 'Authorization': 'Bearer YOUR_TOKEN', // Example if needed
     };
-    var url = Uri.parse('http://localhost:5263/api/Product');
+    var url = Uri.parse('$baseUrl/post');
     var response = await http.get(url, headers: customHeaders);
     if (response.statusCode == 200) {
       List data = jsonDecode(response.body);
@@ -191,5 +197,29 @@ class _AllApiScreenState extends State<AllApiScreen> {
     print(' Delete Response for Delete is is ${response.statusCode}');
 
     setState(() => isLoading = false);
+  }
+
+  void loadData() async {
+    var response = await api.get('/posts');
+    if (response != null) {
+      List data = response.data;
+      post = data.map((e) => Post.fromMap(e)).toList();
+
+      print(response.data);
+    }
+  }
+
+  Post p1 = Post(
+    userId: 12,
+    id: 1,
+    title: 'This is a title',
+    body: 'This is a body',
+  );
+
+  void createPost() async {
+    var response = await api.post("/posts", p1.toMap());
+    if (response != null) {
+      print(response.data);
+    }
   }
 }

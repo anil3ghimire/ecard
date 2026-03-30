@@ -19,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
     print('Value is   $totalValue');
   }
+  
 
   final List categories = ["All", "Men", "Women", "Girls"];
   List<User> user = [];
