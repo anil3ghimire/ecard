@@ -1,4 +1,4 @@
-import 'package:ecard/screens/home_screen.dart';
+import 'package:ecard/screens/all_api_screen.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: HomeScreen(),
+      home: AllApiScreen(),
     );
   }
 }

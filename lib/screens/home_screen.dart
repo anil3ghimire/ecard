@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:ecard/model/user/user.dart';
 import 'package:ecard/screens/product_details_screen.dart';
-import 'package:ecard/widgets/row_text.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -95,25 +93,37 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox(
                 height: 500,
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: user.length,
-                  itemBuilder: (context, index) {
-                    var finalUser = user[index];
-                    return isLoading
-                        ? CircularProgressIndicator()
-                        : ListTile(
-                            leading: CircleAvatar(
-                              child: Text(finalUser.id.toString()),
-                            ),
-                            title: Text(finalUser.name ?? 'n/a'),
-                            trailing: Text(finalUser.company!.name.toString()),
-                            subtitle: Text(
-                              finalUser.address!.geo!.lat.toString(),
-                            ),
-                          );
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductDetailsScreen(),
+                      ),
+                    );
                   },
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: user.length,
+                    itemBuilder: (context, index) {
+                      var finalUser = user[index];
+                      return isLoading
+                          ? CircularProgressIndicator()
+                          : ListTile(
+                              leading: CircleAvatar(
+                                child: Text(finalUser.id.toString()),
+                              ),
+                              title: Text(finalUser.name ?? 'n/a'),
+                              trailing: Text(
+                                finalUser.company!.name.toString(),
+                              ),
+                              subtitle: Text(
+                                finalUser.address!.geo!.lat.toString(),
+                              ),
+                            );
+                    },
+                  ),
                 ),
               ),
             ],
